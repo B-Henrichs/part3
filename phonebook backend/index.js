@@ -116,45 +116,6 @@ let persons = [
   })
 
 
-  const createUpdateMiddlewares = [cors(), jsonParser, jsonParserErrorHandler];
-
-  // handles "put" method requests to server
-  app.put("/api/persons/:id", createUpdateMiddlewares, (req, res, next) => {
-    const { body } = req;
-  
-    if (!body.name || !body.number) {
-      throw new ErrorHandler(400, ["Missing name and/or number fields"]);
-    }
-  
-    const person = {
-      name: body.name,
-      number: body.number,
-    };
-  
-    Person.findByIdAndUpdate(req.params.id, person, {
-      new: true,
-    })
-      .then((updatedPerson) => {
-        if (updatedPerson) {
-          res.json(updatedPerson.toJSON());
-        } else {
-          res.status(404).end();
-        }
-      })
-      .catch((err) => {
-        console.error(err);
-        if (err.name === "CastError" && err.kind === "ObjectId") {
-          next(new ErrorHandler(400, ["Malformatted Id"]));
-        }
-  
-        next(err);
-      });
-  });
-
-
-
-
-
   app.delete('/api/persons/:id', (request, response) => {
     const id = Number(request.params.id)
     persons = persons.filter(person => person.id !== id)
