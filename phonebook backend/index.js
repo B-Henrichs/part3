@@ -41,10 +41,11 @@ let persons = [
         "id": 3
       },
       {
-        "name": "bob",
+        "name": "Hello Dale",
         "number": "867 5309",
         "id": 4
-      }
+      },
+
   ]
 //   these handle reqests to the server
   app.get('/', (request, response) => {
