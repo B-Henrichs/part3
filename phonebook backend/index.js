@@ -2,6 +2,10 @@
 const express = require('express')
 const app = express()
 
+//import cors and use
+const cors = require('cors')
+app.use(cors())
+
 // informs express which format(I think)
 app.use(express.json()) 
 
@@ -19,12 +23,7 @@ morgan.token("post", (req, res) => {
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :post'))
 
 
-//import cors and use
-const cors = require('cors')
-
-app.use(cors())
-
-//   "the database"
+//  the initial database
 let persons = [
     {
         "name": "Arto Hellas",
@@ -47,7 +46,7 @@ let persons = [
         "id": 4
       }
   ]
-//   these hand reqests to the server
+//   these handle reqests to the server
   app.get('/', (request, response) => {
     response.send('<h1>Hello World!</h1>')
   })
@@ -104,7 +103,7 @@ let persons = [
         error: 'name must be unique' 
       })
     }
-
+    
     const person = {
       name: body.name,
       number: body.number || false,
@@ -116,6 +115,46 @@ let persons = [
     response.json(person)
   })
 
+
+  const createUpdateMiddlewares = [cors(), jsonParser, jsonParserErrorHandler];
+
+  // handles "put" method requests to server
+  app.put("/api/persons/:id", createUpdateMiddlewares, (req, res, next) => {
+    const { body } = req;
+  
+    if (!body.name || !body.number) {
+      throw new ErrorHandler(400, ["Missing name and/or number fields"]);
+    }
+  
+    const person = {
+      name: body.name,
+      number: body.number,
+    };
+  
+    Person.findByIdAndUpdate(req.params.id, person, {
+      new: true,
+    })
+      .then((updatedPerson) => {
+        if (updatedPerson) {
+          res.json(updatedPerson.toJSON());
+        } else {
+          res.status(404).end();
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+        if (err.name === "CastError" && err.kind === "ObjectId") {
+          next(new ErrorHandler(400, ["Malformatted Id"]));
+        }
+  
+        next(err);
+      });
+  });
+
+
+
+
+
   app.delete('/api/persons/:id', (request, response) => {
     const id = Number(request.params.id)
     persons = persons.filter(person => person.id !== id)
@@ -124,7 +163,7 @@ let persons = [
   })
   
 
-  const PORT = process.env.PORT || 80
+  const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`)
   })
