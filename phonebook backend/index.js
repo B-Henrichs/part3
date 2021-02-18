@@ -8,7 +8,7 @@ app.use(cors())
 
 // informs express which format(I think)
 app.use(express.json()) 
-
+app.use(express.static('build'))
 // imports morgan
 const morgan = require('morgan')
 // creates custom morgan token that has weird
