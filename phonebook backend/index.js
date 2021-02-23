@@ -50,30 +50,24 @@ const Number = require('./models/number')
 
   //specific entrys
   app.get('/api/persons/:id', (request, response) => {
-    const id =  Number(request.params.id)
-    const person = persons.find(person => person.id === id)
-    if (person) {
-        response.json(person)
-      } else {
-        response.status(404).end()
-      }
+    Number.findById(request.params.id).then(person => {
+      response.json(person)
+    })
   })
 
   // handles ID generation for the post function
-  const generateId = () => {
+  /*const generateId = () => {
     const maxId = persons.length > 0
       ? Math.max(...persons.map(n => n.id))
       : 0
     return maxId + 1
-  }
+  }*/
 
 
   // handles "post" requests to server
   app.post('/api/persons', (request, response) => {
     const body = request.body
-    const isNameExist = persons.filter(
-      (item) => item.name.toLocaleLowerCase() === body.name.toLowerCase()
-    ).length;
+    
 
     if (!body.number) {
       return response.status(400).json({ 
@@ -83,20 +77,15 @@ const Number = require('./models/number')
       return response.status(400).json({ 
         error: 'name missing' 
       })
-    }else if (isNameExist ){
-      return response.status(400).json({ 
-        error: 'name must be unique' 
-      })
     }
     
     const person = new Number({
       name: body.name,
-      number: body.number || false,
-      id: generateId(),
+      number: body.number || false
     })
   
-    person.save().then(savedPerson +> {
-      respose.json(savedPerson)
+    person.save().then(savedPerson => {
+      response.json(savedPerson)
     })
   })
 
