@@ -20,6 +20,7 @@
     "dotenv": "^8.2.0",
     "expresss": "0.0.0",
     "json-server": "^0.16.3",
+    "mongoose": "^5.11.18",
     "morgan": "^1.10.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
