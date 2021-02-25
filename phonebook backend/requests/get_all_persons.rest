@@ -1,14 +1,15 @@
 GET https://phonebook-bob.herokuapp.com/api/persons/
 
 ###
-POST https://phonebook-bob.herokuapp.com/api/persons/ HTTP/1.1
+POST http://localhost:3001/api/persons/6034124cd0c3913500e19026 HTTP/1.1
 content-type: application/json
 
-{
-    "name": "sample",
-    "number":"867 5309"
-}
+
 
 ###
-DELETE https://phonebook-bob.herokuapp.com/api/persons/5 HTTP/1.1
+GET http://localhost:3001/api/persons/ HTTP/1.1
+content-type: application/json
+
+###
+GET http://localhost:3001/api/persons/someID HTTP/1.1
 content-type: application/json
