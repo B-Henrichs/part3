@@ -10,7 +10,8 @@
     "build:ui": "rm -rf build && cd ../../../Full Stack/part 2/phonebook-new && npm run build --prod && cp -r build ../../../part 3phonebook backend/",
     "deploy": "git push heroku main",
     "deploy:full": "npm run build:ui && git add . && git commit -m uibuild && npm run deploy",
-    "logs:prod": "heroku logs --tail"
+    "logs:prod": "heroku logs --tail",
+    "lint": "eslint ."
   },
   "author": "Bob Russell",
   "license": "MIT",
@@ -20,7 +21,10 @@
     "dotenv": "^8.2.0",
     "expresss": "0.0.0",
     "json-server": "^0.16.3",
-    "mongoose": "^5.11.18",
+    "logger": "0.0.1",
+    "mongodb": "^3.6.3",
+    "mongoose": "^5.11.15",
+    "mongoose-unique-validator": "^2.0.3",
     "morgan": "^1.10.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
@@ -28,6 +32,7 @@
     "web-vitals": "^0.2.4"
   },
   "devDependencies": {
+    "eslint": "^7.20.0",
     "nodemon": "^2.0.2"
   }
 }

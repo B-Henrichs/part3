@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const uniqueValidator = require('mongoose-unique-validator')
 mongoose.set('useFindAndModify', false);
 const url = process.env.MONGODB_URI
 
@@ -17,7 +18,8 @@ mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true, useFind
     name:{
       type: String,
       minlength: 3,
-      required: true
+      required: true,
+      unique: true
     },
     number:{
       type: String,
@@ -25,6 +27,8 @@ mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true, useFind
       required: true
     }
   })
+
+  numberSchema.plugin(uniqueValidator)
 
   numberSchema.set('toJSON', {
   transform: (document, returnedObject) => {

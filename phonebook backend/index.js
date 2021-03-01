@@ -13,8 +13,9 @@ const cors = require('cors')
 app.use(cors())
 
 // informs express which format(I think)
-app.use(express.json()) 
 app.use(express.static('build'))
+app.use(express.json()) 
+
 
 /*
 
@@ -132,6 +133,7 @@ app.post('/api/persons', (request, response, next) => {
 
   const errorHandler = (error, request, response, next) => {
     console.error(error.message)
+    console.log("the error is",error.name)
   
     if (error.name === 'CastError') {
       return response.status(400).send({ error: 'malformatted id' })
